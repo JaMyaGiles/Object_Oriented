@@ -1,0 +1,124 @@
+package com.company;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        // initializing ArrayLists
+        ArrayList<Inventory> stock = new ArrayList<Inventory>();
+        ArrayList<Order> acquired = new ArrayList<Order>();
+
+        // inserting into the stock ArrayList
+        Inventory cs = new Inventory();
+        cs.setItem("Bison Sweater");
+        cs.setPrice(55.99);
+        stock.add(cs);
+
+        cs = new Inventory();
+        cs.setItem("Bison Tee");
+        cs.setPrice(14.99);
+        stock.add(cs);
+
+        cs = new Inventory();
+        cs.setItem("Bison Hoodie");
+        cs.setPrice(23.99);
+        stock.add(cs);
+
+        cs = new Inventory();
+        cs.setItem("Bison Bumpersticker");
+        cs.setPrice(4.99);
+        stock.add(cs);
+
+        // create the Scanner to take the input from the user
+        Scanner input = new Scanner(System.in);
+        String answer = " ";
+        int index = -1;
+
+        do
+        {
+            // prompt the user for the action that has to be done
+            System.out.println("\nWhat do you want to do?");
+            System.out.println("1) add purchase 2) change purchase 3) show purchases 4) finish transaction");
+            answer = input.nextLine();
+
+            if (answer.equals("1"))
+            {
+                // display the stock items and their prices to the user
+                for (int i = 0; i < stock.size(); i++)
+                {
+                    System.out.println(stock.get(i).getItem() + " - " + stock.get(i).getPrice());
+                }
+
+                // prompt the user for the item to be added to their purchase list
+                System.out.println("What item do you want to add?");
+                String product = input.nextLine();
+
+                // find the entered item in the stock list
+                for (int i = 0; i < stock.size(); i++)
+                {
+                    if (stock.get(i).getItem().equals(product))
+                    {
+                        index = i;
+                    }
+                }
+
+                // create a new Order according to the found stock item
+                // if the item is found in the stock list
+                if (index != -1) {
+                    Order order = new Order ();
+                    order.setPurchase(stock.get(index).getItem());
+                    order.setAmount(stock.get(index).getPrice());
+
+                    // add the order in the acquired list
+                    acquired.add(order);
+                }
+
+            }
+
+            if (answer.equals("2"))
+            {
+                // prompt the user to enter the item to delete
+                System.out.println("What item do you want to remove from purchase?");
+                String prod = input.nextLine();
+
+                // search for the item in the acquired ArrayList
+                for (int i = 0; i < acquired.size(); i++)
+                {
+                    if (acquired.get(i).getPurchase().equals(prod))
+                    {
+                        // if found, remove it and break from the loop
+                        acquired.remove(i);
+                        break;
+                    }
+                }
+            }
+
+            if (answer.equals("3"))
+            {
+                System.out.println("Current items in purchase:");
+
+                // display the purchases: their names and prices
+                for (int j = 0; j < acquired.size(); j++)
+                {
+                    System.out.println(acquired.get(j).getPurchase() + " : $ " + acquired.get(j).getAmount());
+                }
+
+                // sum up the prices of the purchases
+                float total = 0f;
+                for (int i = 0; i < acquired.size(); i++)
+                {
+                    double item = acquired.get(i).getAmount();
+                    total += item;
+                }
+
+                // display the final price to the user
+                System.out.println("Your order total is: $" + total);
+                System.out.println("Thank you for ordering!");
+            }
+        } while (!answer.equals("4"));
+        // if the user entered "4", then, break out of the loop
+    }
+}
